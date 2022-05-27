@@ -3,5 +3,5 @@ import 'package:shopping/domain/entities/shopping_list.dart';
 import 'package:shopping/domain/entities/unit.dart';
 
 abstract class RepositoryImpl {
-  Future<Result<Exception, Unit>> createList(ShoppingList list);
+  Future<Result<int, Unit>> createList(ShoppingList list);
 }

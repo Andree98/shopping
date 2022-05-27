@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
@@ -10,19 +13,22 @@ import 'package:shopping/infrastructure/data/constants.dart';
 @LazySingleton(as: RepositoryImpl)
 class Repository implements RepositoryImpl {
   @override
-  Future<Result<Exception, Unit>> createList(ShoppingList list) async {
+  Future<Result<int, Unit>> createList(ShoppingList list) async {
     try {
-      final result = await http.post(
+      final response = await http.post(
         Uri.parse(kBaseUrl),
-        body: list.toShoppingListDto().toJson(),
+        body: jsonEncode(list.toShoppingListDto().toJson()),
       );
 
-      print(result);
-
-      return const Success(unit);
-    } on Exception catch (e) {
-      // TODO handle error
-      return Failure(e);
+      if (response.statusCode == HttpStatus.ok) {
+        return const Success(unit);
+      } else {
+        // Log in crashlytics
+        return Failure(response.statusCode);
+      }
+    } on Exception catch (_) {
+      // Here I would record the error in Firebase Crashlytics
+      return const Failure(HttpStatus.serviceUnavailable);
     }
   }
 }
