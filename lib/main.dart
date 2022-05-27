@@ -18,7 +18,7 @@ class Shopping extends StatelessWidget {
       initialRoute: HomeScreen.id,
       routes: {
         HomeScreen.id: (_) => BlocProvider(
-              create: (_) => getIt<HomeCubit>(),
+              create: (_) => getIt<HomeCubit>()..loadShoppingLists(),
               child: const HomeScreen(),
             ),
         CreateListScreen.id: (_) => const CreateListScreen()

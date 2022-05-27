@@ -18,17 +18,33 @@ class HomeScreen extends StatelessWidget {
         onPressed: () => Navigator.pushNamed(context, CreateListScreen.id),
         child: const Icon(Icons.add),
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () => context.read<HomeCubit>().createListTest(),
-            child: Text('Create post'),
-          ),
-          ElevatedButton(
-            onPressed: () => context.read<HomeCubit>().getListsTest(),
-            child: Text('Get posts'),
-          ),
-        ],
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (state.getListsResult!.isSuccess()) {
+              if (state.shoppingLists.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: state.shoppingLists.length,
+                  itemBuilder: (context, index) {
+                    return Text(state.shoppingLists[index].id);
+                  },
+                );
+              } else {
+                return const Center(
+                  child: Text("You don't have any shopping lists"),
+                );
+              }
+            } else {
+              return const Center(
+                child: Text('An error has occurred'),
+              );
+            }
+          }
+        },
       ),
     );
   }
