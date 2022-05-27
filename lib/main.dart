@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shopping/injection.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureInjection();
   runApp(const MyApp());
 }
 
