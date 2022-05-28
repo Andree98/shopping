@@ -24,7 +24,6 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadShoppingLists() async {
     final getResult = await _repositoryImpl.getAllShoppingLists();
 
-    print(getResult.get());
     emit(
       state.copyWith(
         isLoading: false,

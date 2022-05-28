@@ -12,8 +12,36 @@ class ShoppingListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      confirmDismiss: (_) =>
-          context.read<HomeCubit>().removeShoppingList(list.id),
+      confirmDismiss: (direction) {
+        if (direction == DismissDirection.startToEnd) {
+          return context.read<HomeCubit>().removeShoppingList(list.id);
+        } else {
+          return Future.value(false);
+        }
+      },
+      background: Container(
+        padding: const EdgeInsets.only(left: 16),
+        color: Colors.red,
+        child: Row(
+          children: const [
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8),
+            Text(
+              'Delete',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
+            )
+          ],
+        ),
+      ),
+      secondaryBackground: Container(
+        color: Colors.transparent,
+      ),
       key: Key(list.id),
       child: Card(
         child: ListTile(
