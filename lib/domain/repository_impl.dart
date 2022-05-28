@@ -5,7 +5,9 @@ import 'package:shopping/domain/entities/unit.dart';
 abstract class RepositoryImpl {
   Future<Result<int, Unit>> createList(ShoppingList list);
 
-  Future<Result<int, Unit>> removeList(String id);
+  Future<Result<int, Unit>> deleteList(String id);
 
-  Future<Result<int, List<ShoppingList>>> getAllShoppingLists();
+  Future<Result<int, Unit>> deleteAllLists();
+
+  Future<Result<int, List<ShoppingList>>> getAllLists();
 }

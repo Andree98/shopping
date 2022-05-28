@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
       items: {'item 1': false}));
 
   Future<void> loadShoppingLists() async {
-    final getResult = await _repositoryImpl.getAllShoppingLists();
+    final getResult = await _repositoryImpl.getAllLists();
 
     emit(
       state.copyWith(
@@ -37,7 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(isDeleting: true));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
-    final deleteResult = await _repositoryImpl.removeList(id);
+    final deleteResult = await _repositoryImpl.deleteList(id);
 
     if (deleteResult.isSuccess()) shoppingList.removeWhere((e) => e.id == id);
 
@@ -50,5 +50,22 @@ class HomeCubit extends Cubit<HomeState> {
     );
 
     return deleteResult.isSuccess();
+  }
+
+  void removeAllLists() async {
+    emit(state.copyWith(isDeleting: true));
+
+    final shoppingList = List<ShoppingList>.from(state.shoppingLists);
+    final deleteResult = await _repositoryImpl.deleteAllLists();
+
+    if (deleteResult.isSuccess()) shoppingList.clear();
+
+    emit(
+      state.copyWith(
+        isDeleting: false,
+        shoppingLists: shoppingList,
+        deleteListResult: deleteResult,
+      ),
+    );
   }
 }

@@ -34,7 +34,7 @@ class Repository implements RepositoryImpl {
   }
 
   @override
-  Future<Result<int, Unit>> removeList(String id) async {
+  Future<Result<int, Unit>> deleteList(String id) async {
     try {
       final response = await http.delete(Uri.parse('$kBaseUrl/$id$kJson'));
 
@@ -49,7 +49,22 @@ class Repository implements RepositoryImpl {
   }
 
   @override
-  Future<Result<int, List<ShoppingList>>> getAllShoppingLists() async {
+  Future<Result<int, Unit>> deleteAllLists() async {
+    try {
+      final response = await http.delete(Uri.parse('$kBaseUrl/$kJson'));
+
+      if (response.statusCode == HttpStatus.ok) {
+        return const Success(unit);
+      } else {
+        return Failure(response.statusCode);
+      }
+    } catch (_) {
+      return const Failure(HttpStatus.serviceUnavailable);
+    }
+  }
+
+  @override
+  Future<Result<int, List<ShoppingList>>> getAllLists() async {
     try {
       final response = await http.get(Uri.parse('$kBaseUrl/$kJson'));
 
@@ -59,7 +74,6 @@ class Repository implements RepositoryImpl {
         return Failure(response.statusCode);
       }
     } catch (e) {
-      print(e);
       return const Failure(HttpStatus.serviceUnavailable);
     }
   }
