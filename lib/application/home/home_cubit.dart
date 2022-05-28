@@ -3,19 +3,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
-import 'package:shopping/domain/repository_impl.dart';
+import 'package:shopping/domain/home/home_interface.dart';
 
 part 'home_cubit.freezed.dart';
 part 'home_state.dart';
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
-  final RepositoryImpl _repositoryImpl;
+  final HomeInterface _homeInterface;
 
-  HomeCubit(this._repositoryImpl) : super(HomeState.initial());
+  HomeCubit(this._homeInterface) : super(HomeState.initial());
 
   Future<void> loadShoppingLists() async {
-    final getResult = await _repositoryImpl.getAllLists();
+    final getResult = await _homeInterface.getAllLists();
 
     emit(
       state.copyWith(
@@ -31,7 +31,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(isDeleting: true, deleteListResult: null));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
-    final deleteResult = await _repositoryImpl.deleteList(id);
+    final deleteResult = await _homeInterface.deleteList(id);
 
     if (deleteResult.isSuccess()) shoppingList.removeWhere((e) => e.id == id);
 
@@ -50,7 +50,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(isDeleting: true));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
-    final deleteResult = await _repositoryImpl.deleteAllLists();
+    final deleteResult = await _homeInterface.deleteAllLists();
 
     if (deleteResult.isSuccess()) shoppingList.clear();
 

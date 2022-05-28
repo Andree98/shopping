@@ -9,6 +9,6 @@ class CreateListState with _$CreateListState {
 
   factory CreateListState.initial() => CreateListState(
         title: ListTitle(''),
-        showError: true,
+        showError: false,
       );
 }
