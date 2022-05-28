@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/presentation/screens/create_list_screen.dart';
+import 'package:shopping/presentation/widgets/shopping_list_item.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String id = '/home';
@@ -29,9 +30,9 @@ class HomeScreen extends StatelessWidget {
               if (state.shoppingLists.isNotEmpty) {
                 return ListView.builder(
                   itemCount: state.shoppingLists.length,
-                  itemBuilder: (context, index) {
-                    return Text(state.shoppingLists[index].id);
-                  },
+                  itemBuilder: (context, index) => ShoppingListItem(
+                    list: state.shoppingLists[index],
+                  ),
                 );
               } else {
                 return const Center(
