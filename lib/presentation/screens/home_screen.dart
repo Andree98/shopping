@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () => context.read<HomeCubit>().test(),
         child: const Icon(Icons.add),
       ),
-      body: BlocBuilder<HomeCubit, HomeState>(
+      body: BlocConsumer<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state.isLoading) {
             return const Center(
@@ -41,6 +41,50 @@ class HomeScreen extends StatelessWidget {
             } else {
               return const Center(
                 child: Text('An error has occurred'),
+              );
+            }
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.isDeleting != current.isDeleting,
+        listener: (context, state) {
+          if (state.isDeleting) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(hours: 1),
+                content: Row(
+                  children: const [
+                    SizedBox.square(
+                      dimension: 15,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.5,
+                      ),
+                    ),
+                    SizedBox(width: 16),
+                    Text('Deleting shopping list'),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+            if (state.deleteListResult?.isFailure() ?? false) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Row(
+                    children: const [
+                      Icon(
+                        Icons.error_outline,
+                        color: Colors.white,
+                        size: 15,
+                      ),
+                      SizedBox(width: 16),
+                      Text('An error has occurred'),
+                    ],
+                  ),
+                ),
               );
             }
           }

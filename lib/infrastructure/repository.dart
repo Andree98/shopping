@@ -38,9 +38,6 @@ class Repository implements RepositoryImpl {
     try {
       final response = await http.delete(Uri.parse('$kBaseUrl/$id$kJson'));
 
-      print(Uri.parse('$kBaseUrl/$id/$kJson'));
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == HttpStatus.ok) {
         return const Success(unit);
       } else {

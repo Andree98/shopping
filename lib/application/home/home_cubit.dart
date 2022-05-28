@@ -16,7 +16,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._repositoryImpl) : super(HomeState.initial());
 
   void test() => _repositoryImpl.createList(ShoppingList(
-      id: const Uuid().v1(),
+      id: const Uuid().v4(),
       title: 'Test list 1',
       created: DateTime.now().millisecondsSinceEpoch,
       items: {'item 1': false}));
@@ -34,7 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> removeShoppingList(String id) async {
+  Future<bool> removeShoppingList(String id) async {
     emit(state.copyWith(isDeleting: true));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
@@ -44,10 +44,12 @@ class HomeCubit extends Cubit<HomeState> {
 
     emit(
       state.copyWith(
-        isLoading: false,
+        isDeleting: false,
         shoppingLists: shoppingList,
         deleteListResult: deleteResult,
       ),
     );
+
+    return deleteResult.isSuccess();
   }
 }

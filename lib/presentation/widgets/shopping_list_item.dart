@@ -12,7 +12,8 @@ class ShoppingListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      onDismissed: (_) => context.read<HomeCubit>().removeShoppingList(list.id),
+      confirmDismiss: (_) =>
+          context.read<HomeCubit>().removeShoppingList(list.id),
       key: Key(list.id),
       child: Card(
         child: ListTile(
