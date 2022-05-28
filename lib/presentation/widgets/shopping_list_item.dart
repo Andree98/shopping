@@ -25,6 +25,7 @@ class ShoppingListItem extends StatelessWidget {
         child: Row(
           children: const [
             Icon(
+              size: 20,
               Icons.delete,
               color: Colors.white,
             ),
@@ -32,9 +33,8 @@ class ShoppingListItem extends StatelessWidget {
             Text(
               'Delete',
               style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
+                color: Colors.white,
+              ),
             )
           ],
         ),

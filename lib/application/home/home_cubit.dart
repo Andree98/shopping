@@ -35,7 +35,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<bool> removeShoppingList(String id) async {
-    emit(state.copyWith(isDeleting: true));
+    emit(state.copyWith(isDeleting: true, deleteListResult: null));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
     final deleteResult = await _repositoryImpl.deleteList(id);

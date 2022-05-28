@@ -35,87 +35,81 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () => context.read<HomeCubit>().test(),
         child: const Icon(Icons.add),
       ),
-      body: RefreshIndicator(
-        onRefresh: () {
-          context.read<HomeCubit>().refresh();
-
-          return context
-              .read<HomeCubit>()
-              .stream
-              .firstWhere((e) => !e.isRefreshing);
-        },
-        child: BlocConsumer<HomeCubit, HomeState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (state.getListsResult!.isSuccess()) {
-                if (state.shoppingLists.isNotEmpty) {
-                  return ListView.builder(
-                    itemCount: state.shoppingLists.length,
-                    itemBuilder: (context, index) => ShoppingListItem(
-                      list: state.shoppingLists[index],
+      body: BlocConsumer<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            if (state.getListsResult!.isSuccess()) {
+              if (state.shoppingLists.isNotEmpty) {
+                return Column(
+                  children: [
+                    Visibility(
+                      visible: state.isDeleting,
+                      replacement: const SizedBox(height: 5),
+                      child: const LinearProgressIndicator(
+                        color: Colors.pinkAccent,
+                        minHeight: 5,
+                      ),
                     ),
-                  );
-                } else {
-                  return const Center(
-                    child: Text("You don't have any shopping lists"),
-                  );
-                }
-              } else {
-                return const Center(
-                  child: Text('An error has occurred'),
-                );
-              }
-            }
-          },
-          listenWhen: (previous, current) =>
-              previous.isDeleting != current.isDeleting,
-          listener: (context, state) {
-            if (state.isDeleting) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  duration: const Duration(hours: 1),
-                  content: Row(
-                    children: const [
-                      SizedBox.square(
-                        dimension: 15,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () {
+                          context.read<HomeCubit>().refresh();
+
+                          return context
+                              .read<HomeCubit>()
+                              .stream
+                              .firstWhere((e) => !e.isRefreshing);
+                        },
+                        child: ListView.builder(
+                          itemCount: state.shoppingLists.length,
+                          itemBuilder: (context, index) {
+                            return ShoppingListItem(
+                              list: state.shoppingLists[index],
+                            );
+                          },
                         ),
                       ),
-                      SizedBox(width: 16),
-                      Text('Deleting shopping list'),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-              if (state.deleteListResult?.isFailure() ?? false) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Row(
-                      children: const [
-                        Icon(
-                          Icons.error_outline,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                        SizedBox(width: 16),
-                        Text('An error has occurred'),
-                      ],
                     ),
-                  ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: Text("You don't have any shopping lists"),
                 );
               }
+            } else {
+              return const Center(
+                child: Text('An error has occurred'),
+              );
             }
-          },
-        ),
+          }
+        },
+        listenWhen: (_, current) => current.deleteListResult != null,
+        listener: (context, state) {
+          if (state.deleteListResult!.isFailure()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 15,
+                    ),
+                    SizedBox(width: 16),
+                    Text('An error has occurred'),
+                  ],
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
