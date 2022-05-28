@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
+import 'package:shopping/presentation/screens/create_list_screen.dart';
 import 'package:shopping/presentation/widgets/delete_dialog.dart';
 import 'package:shopping/presentation/widgets/shopping_list_item.dart';
 
@@ -32,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<HomeCubit>().test(),
+        onPressed: () => Navigator.pushNamed(context, CreateListScreen.id),
         child: const Icon(Icons.add),
       ),
       body: BlocConsumer<HomeCubit, HomeState>(

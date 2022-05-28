@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/injection.dart';
 import 'package:shopping/presentation/screens/create_list_screen.dart';
@@ -21,7 +22,10 @@ class Shopping extends StatelessWidget {
               create: (_) => getIt<HomeCubit>(),
               child: const HomeScreen(),
             ),
-        CreateListScreen.id: (_) => const CreateListScreen()
+        CreateListScreen.id: (_) => BlocProvider(
+              create: (_) => getIt<CreateListBloc>(),
+              child: const CreateListScreen(),
+            )
       },
     );
   }

@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
 import 'package:shopping/domain/repository_impl.dart';
-import 'package:uuid/uuid.dart';
 
 part 'home_cubit.freezed.dart';
 part 'home_state.dart';
@@ -14,12 +13,6 @@ class HomeCubit extends Cubit<HomeState> {
   final RepositoryImpl _repositoryImpl;
 
   HomeCubit(this._repositoryImpl) : super(HomeState.initial());
-
-  void test() => _repositoryImpl.createList(ShoppingList(
-      id: const Uuid().v4(),
-      title: 'Test list 1',
-      created: DateTime.now().millisecondsSinceEpoch,
-      items: {'item 1': false}));
 
   Future<void> loadShoppingLists() async {
     final getResult = await _repositoryImpl.getAllLists();
