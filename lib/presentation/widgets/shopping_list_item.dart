@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
 
 class ShoppingListItem extends StatelessWidget {
@@ -9,11 +11,15 @@ class ShoppingListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(list.title),
-        trailing: Text(_formatDate()),
-        subtitle: Text(_getCompletionStatus()),
+    return Dismissible(
+      onDismissed: (_) => context.read<HomeCubit>().removeShoppingList(list.id),
+      key: Key(list.id),
+      child: Card(
+        child: ListTile(
+          title: Text(list.title),
+          trailing: Text(_formatDate()),
+          subtitle: Text(_getCompletionStatus()),
+        ),
       ),
     );
   }

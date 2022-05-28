@@ -4,12 +4,15 @@ part of 'home_cubit.dart';
 class HomeState with _$HomeState {
   const factory HomeState({
     required bool isLoading,
+    required bool isDeleting,
     required List<ShoppingList> shoppingLists,
     Result? getListsResult,
+    Result? deleteListResult,
   }) = _HomeState;
 
   factory HomeState.initial() => const HomeState(
-        isLoading: true,
+    isLoading: true,
+        isDeleting: false,
         shoppingLists: [],
       );
 }

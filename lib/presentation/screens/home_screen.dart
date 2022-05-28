@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
-import 'package:shopping/presentation/screens/create_list_screen.dart';
 import 'package:shopping/presentation/widgets/shopping_list_item.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Shopping list'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, CreateListScreen.id),
+        onPressed: () => context.read<HomeCubit>().test(),
         child: const Icon(Icons.add),
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
