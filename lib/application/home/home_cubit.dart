@@ -27,6 +27,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(
       state.copyWith(
         isLoading: false,
+        isRefreshing: false,
         shoppingLists: getResult.getSuccess() ?? [],
         getListsResult: getResult,
       ),
@@ -67,5 +68,10 @@ class HomeCubit extends Cubit<HomeState> {
         deleteListResult: deleteResult,
       ),
     );
+  }
+
+  void refresh() {
+    emit(state.copyWith(isRefreshing: true));
+    loadShoppingLists();
   }
 }

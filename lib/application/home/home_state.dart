@@ -5,6 +5,7 @@ class HomeState with _$HomeState {
   const factory HomeState({
     required bool isLoading,
     required bool isDeleting,
+    required bool isRefreshing,
     required List<ShoppingList> shoppingLists,
     Result? getListsResult,
     Result? deleteListResult,
@@ -13,6 +14,7 @@ class HomeState with _$HomeState {
   factory HomeState.initial() => const HomeState(
     isLoading: true,
         isDeleting: false,
+        isRefreshing: false,
         shoppingLists: [],
       );
 }
