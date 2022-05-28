@@ -8,6 +8,7 @@ class ShoppingListDto with _$ShoppingListDto {
   const factory ShoppingListDto({
     required String id,
     required String title,
+    required int created,
     required Map<String, bool> items,
   }) = _ShoppingListDto;
 
