@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
-import 'package:shopping/presentation/screens/create_list_screen.dart';
-import 'package:shopping/presentation/widgets/delete_dialog.dart';
-import 'package:shopping/presentation/widgets/shopping_list_item.dart';
+import 'package:shopping/presentation/create/screens/create_list_screen.dart';
+import 'package:shopping/presentation/home/widgets/delete_dialog.dart';
+import 'package:shopping/presentation/home/widgets/shopping_list_item.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = '/home';

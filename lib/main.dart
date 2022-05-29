@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/injection.dart';
-import 'package:shopping/presentation/screens/create_list_screen.dart';
-import 'package:shopping/presentation/screens/home_screen.dart';
+import 'package:shopping/presentation/create/screens/create_list_screen.dart';
+import 'package:shopping/presentation/home/screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

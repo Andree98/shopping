@@ -5,10 +5,12 @@ class CreateListState with _$CreateListState {
   const factory CreateListState({
     required ListTitle title,
     required bool showError,
+    required List<ListItem> items,
   }) = _CreateListState;
 
   factory CreateListState.initial() => CreateListState(
-        title: ListTitle(''),
+    title: ListTitle(''),
         showError: false,
+        items: [],
       );
 }
