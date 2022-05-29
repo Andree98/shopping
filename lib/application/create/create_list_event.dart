@@ -8,6 +8,8 @@ class CreateListEvent with _$CreateListEvent {
 
   const factory CreateListEvent.removeItem(int index) = _RemoveItem;
 
+  const factory CreateListEvent.saveList() = _SaveList;
+
   const factory CreateListEvent.checkStateChanged(
     int index,
     bool isChecked,

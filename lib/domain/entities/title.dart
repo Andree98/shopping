@@ -1,7 +1,8 @@
 import 'package:multiple_result/multiple_result.dart';
+import 'package:shopping/domain/entities/value_object.dart';
 import 'package:shopping/domain/utils/input_failure.dart';
 
-class ListTitle {
+class ListTitle extends ValueObject {
   @override
   final Result<InputFailure, String> value;
 

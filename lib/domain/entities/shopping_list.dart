@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shopping/domain/entities/list_item.dart';
 
 part 'shopping_list.freezed.dart';
 
@@ -8,6 +9,6 @@ class ShoppingList with _$ShoppingList {
     required String id,
     required String title,
     required int created,
-    required Map<String, bool> items,
+    required List<ListItem> items,
   }) = _ShoppingList;
 }

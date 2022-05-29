@@ -24,17 +24,27 @@ class _CreateListScreenState extends State<CreateListScreen> {
         title: const Text('New list'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => context
+                .read<CreateListBloc>()
+                .add(const CreateListEvent.saveList()),
             tooltip: 'Save',
             splashRadius: 24.0,
             icon: const Icon(Icons.check),
           ),
         ],
       ),
-      body: BlocBuilder<CreateListBloc, CreateListState>(
+      body: BlocConsumer<CreateListBloc, CreateListState>(
         builder: (context, state) {
           return Column(
             children: [
+              Visibility(
+                visible: state.isSaving,
+                replacement: const SizedBox(height: 5),
+                child: const LinearProgressIndicator(
+                  color: Colors.pinkAccent,
+                  minHeight: 5,
+                ),
+              ),
               const SizedBox(height: 32),
               Form(
                 autovalidateMode: state.showError
@@ -63,7 +73,6 @@ class _CreateListScreenState extends State<CreateListScreen> {
                           .read<CreateListBloc>()
                           .add(CreateListEvent.removeItem(index)),
                       child: CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
                         title: Text(
                           item.label,
                           style: TextStyle(
@@ -86,6 +95,30 @@ class _CreateListScreenState extends State<CreateListScreen> {
               ),
             ],
           );
+        },
+        listenWhen: (_, current) => current.saveListResult != null,
+        listener: (context, state) {
+          if (state.saveListResult!.isFailure()) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Row(
+                  children: const [
+                    Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 15,
+                    ),
+                    SizedBox(width: 16),
+                    Text('An error has occurred'),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            Navigator.pop(context);
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(

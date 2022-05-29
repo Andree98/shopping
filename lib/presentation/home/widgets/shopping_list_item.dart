@@ -67,8 +67,8 @@ class ShoppingListItem extends StatelessWidget {
   }
 
   String _getCompletionStatus() {
-    final total = list.items.entries.length;
-    final completed = list.items.entries.where((e) => e.value).length;
+    final total = list.items.length;
+    final completed = list.items.where((e) => e.isChecked).length;
 
     return 'Completed: $completed / $total';
   }
