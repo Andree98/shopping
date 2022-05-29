@@ -17,8 +17,10 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
     on<CreateListEvent>(
       (event, emit) async => event.map(
         titleChanged: (e) => _onTitleChangedEvent(e.input, emit),
-        newItem: (e) => _onNewItemEvent(e.label, emit),
-        checkState: (e) => _onCheckStateEvent(e.index, e.isChecked, emit),
+        addItem: (e) => _onAddItemEvent(e.label, emit),
+        removeItem: (e) => _onRemoveItemEvent(e.index, emit),
+        checkStateChanged: (e) =>
+            _onCheckStateChangedEvent(e.index, e.isChecked, emit),
       ),
     );
   }
@@ -27,12 +29,16 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
     emit(state.copyWith(title: ListTitle(input.trim())));
   }
 
-  void _onNewItemEvent(String label, Emitter<CreateListState> emit) {
+  void _onAddItemEvent(String label, Emitter<CreateListState> emit) {
     final listItem = ListItem(label: label, isChecked: false);
     emit(state.copyWith(items: List.from(state.items)..add(listItem)));
   }
 
-  void _onCheckStateEvent(
+  void _onRemoveItemEvent(int index, Emitter<CreateListState> emit) {
+    emit(state.copyWith(items: List.from(state.items)..removeAt(index)));
+  }
+
+  void _onCheckStateChangedEvent(
     int index,
     bool isChecked,
     Emitter<CreateListState> emit,

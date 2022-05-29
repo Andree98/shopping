@@ -22,6 +22,14 @@ class _CreateListScreenState extends State<CreateListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New list'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            tooltip: 'Save',
+            splashRadius: 24.0,
+            icon: const Icon(Icons.check),
+          ),
+        ],
       ),
       body: BlocBuilder<CreateListBloc, CreateListState>(
         builder: (context, state) {
@@ -47,12 +55,31 @@ class _CreateListScreenState extends State<CreateListScreen> {
                 child: ListView.builder(
                   itemCount: state.items.length,
                   itemBuilder: (context, index) {
-                    return CheckboxListTile(
-                      title: Text(state.items[index].label),
-                      value: state.items[index].isChecked,
-                      onChanged: (checked) => context
+                    final item = state.items[index];
+
+                    return Dismissible(
+                      key: Key(item.hashCode.toString()),
+                      onDismissed: (_) => context
                           .read<CreateListBloc>()
-                          .add(CreateListEvent.checkState(index, checked!)),
+                          .add(CreateListEvent.removeItem(index)),
+                      child: CheckboxListTile(
+                        controlAffinity: ListTileControlAffinity.leading,
+                        title: Text(
+                          item.label,
+                          style: TextStyle(
+                            decoration: item.isChecked
+                                ? TextDecoration.lineThrough
+                                : null,
+                          ),
+                        ),
+                        value: item.isChecked,
+                        onChanged: (checked) => context
+                            .read<CreateListBloc>()
+                            .add(CreateListEvent.checkStateChanged(
+                              index,
+                              checked!,
+                            )),
+                      ),
                     );
                   },
                 ),
@@ -104,7 +131,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
     if (itemLabel != null && itemLabel.isNotEmpty) {
       if (!mounted) return;
 
-      context.read<CreateListBloc>().add(CreateListEvent.newItem(itemLabel));
+      context.read<CreateListBloc>().add(CreateListEvent.addItem(itemLabel));
     }
   }
 }
