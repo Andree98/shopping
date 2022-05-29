@@ -44,12 +44,19 @@ class _CreateListScreenState extends State<CreateListScreen> {
                 ),
               ),
               Expanded(
-                  child: ListView.builder(
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  return Text(state.items[index].label);
-                },
-              ))
+                child: ListView.builder(
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) {
+                    return CheckboxListTile(
+                      title: Text(state.items[index].label),
+                      value: state.items[index].isChecked,
+                      onChanged: (checked) => context
+                          .read<CreateListBloc>()
+                          .add(CreateListEvent.checkState(index, checked!)),
+                    );
+                  },
+                ),
+              ),
             ],
           );
         },
