@@ -35,63 +35,65 @@ class _CreateListScreenState extends State<CreateListScreen> {
       ),
       body: BlocConsumer<CreateListBloc, CreateListState>(
         builder: (context, state) {
-          return Column(
-            children: [
-              Visibility(
-                visible: state.isSaving,
-                replacement: const SizedBox(height: 5),
-                child: const LinearProgressIndicator(
-                  color: Colors.pinkAccent,
-                  minHeight: 5,
+          return CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Visibility(
+                  visible: state.isSaving,
+                  replacement: const SizedBox(height: 5),
+                  child: const LinearProgressIndicator(
+                    color: Colors.pinkAccent,
+                    minHeight: 5,
+                  ),
                 ),
               ),
-              const SizedBox(height: 32),
-              Form(
-                autovalidateMode: state.showError
-                    ? AutovalidateMode.always
-                    : AutovalidateMode.disabled,
-                child: TextFormField(
-                  controller: _titleController,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  textCapitalization: TextCapitalization.sentences,
-                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  maxLength: 40,
-                  decoration: const InputDecoration(labelText: 'Title'),
-                  validator: (_) => _validateTitle(),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Form(
+                    autovalidateMode: state.showError
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
+                    child: TextFormField(
+                      controller: _titleController,
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.done,
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      maxLength: 40,
+                      decoration: const InputDecoration(labelText: 'Title'),
+                      validator: (_) => _validateTitle(),
+                    ),
+                  ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: state.items.length,
-                  itemBuilder: (context, index) {
-                    final item = state.items[index];
-
-                    return Dismissible(
-                      key: Key(item.hashCode.toString()),
-                      onDismissed: (_) => context
-                          .read<CreateListBloc>()
-                          .add(CreateListEvent.removeItem(index)),
-                      child: CheckboxListTile(
-                        title: Text(
-                          item.label,
-                          style: TextStyle(
-                            decoration: item.isChecked
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final item = state.items[index];
+                  return Dismissible(
+                    key: Key(item.hashCode.toString()),
+                    onDismissed: (_) => context
+                        .read<CreateListBloc>()
+                        .add(CreateListEvent.removeItem(index)),
+                    child: CheckboxListTile(
+                      title: Text(
+                        item.label,
+                        style: TextStyle(
+                          decoration: item.isChecked
+                              ? TextDecoration.lineThrough
+                              : null,
                         ),
-                        value: item.isChecked,
-                        onChanged: (checked) => context
-                            .read<CreateListBloc>()
-                            .add(CreateListEvent.checkStateChanged(
-                              index,
-                              checked!,
-                            )),
                       ),
-                    );
-                  },
-                ),
+                      value: item.isChecked,
+                      onChanged: (checked) => context
+                          .read<CreateListBloc>()
+                          .add(CreateListEvent.checkStateChanged(
+                            index,
+                            checked!,
+                          )),
+                    ),
+                  );
+                }, childCount: state.items.length),
               ),
             ],
           );
