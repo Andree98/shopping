@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
+import 'package:shopping/presentation/common/delete_background.dart';
 import 'package:shopping/presentation/create/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/home/data/presentation_constants.dart';
 
@@ -67,34 +68,54 @@ class _CreateListScreenState extends State<CreateListScreen> {
                   ),
                 ),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) {
-                  final item = state.items[index];
-                  return Dismissible(
-                    key: Key(item.hashCode.toString()),
-                    onDismissed: (_) => context
-                        .read<CreateListBloc>()
-                        .add(CreateListEvent.removeItem(index)),
-                    child: CheckboxListTile(
-                      title: Text(
-                        item.label,
-                        style: TextStyle(
-                          decoration: item.isChecked
-                              ? TextDecoration.lineThrough
-                              : null,
+              if (state.items.isNotEmpty)
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final item = state.items[index];
+                    return Dismissible(
+                      key: Key(item.hashCode.toString()),
+                      confirmDismiss: (direction) {
+                        if (direction == DismissDirection.startToEnd) {
+                          context
+                              .read<CreateListBloc>()
+                              .add(CreateListEvent.removeItem(index));
+                          return Future.value(true);
+                        } else {
+                          return Future.value(false);
+                        }
+                      },
+                      background: const DeleteBackground(),
+                      secondaryBackground: Container(
+                        color: Colors.transparent,
+                      ),
+                      child: Card(
+                        child: CheckboxListTile(
+                          title: Text(
+                            item.label,
+                            style: TextStyle(
+                              decoration: item.isChecked
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
+                          value: item.isChecked,
+                          onChanged: (checked) => context
+                              .read<CreateListBloc>()
+                              .add(CreateListEvent.checkStateChanged(
+                                index,
+                                checked!,
+                              )),
                         ),
                       ),
-                      value: item.isChecked,
-                      onChanged: (checked) => context
-                          .read<CreateListBloc>()
-                          .add(CreateListEvent.checkStateChanged(
-                            index,
-                            checked!,
-                          )),
-                    ),
-                  );
-                }, childCount: state.items.length),
-              ),
+                    );
+                  }, childCount: state.items.length),
+                )
+              else
+                const SliverFillRemaining(
+                  child: Center(
+                    child: Text('Add new items'),
+                  ),
+                ),
             ],
           );
         },
@@ -124,6 +145,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'New item',
         onPressed: () async => _openNewItemDialog(),
         child: const Icon(Icons.create),
       ),

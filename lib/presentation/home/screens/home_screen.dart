@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'New list',
         onPressed: () => Navigator.pushNamed(context, CreateListScreen.id),
         child: const Icon(Icons.add),
       ),
@@ -45,27 +46,27 @@ class _HomeScreenState extends State<HomeScreen> {
           } else {
             if (state.getListsResult!.isSuccess()) {
               if (state.shoppingLists.isNotEmpty) {
-                return Column(
-                  children: [
-                    Visibility(
-                      visible: state.isDeleting,
-                      replacement: const SizedBox(height: 5),
-                      child: const LinearProgressIndicator(
-                        color: Colors.pinkAccent,
-                        minHeight: 5,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Expanded(
-                      child: RefreshIndicator(
-                        onRefresh: () {
-                          context.read<HomeCubit>().refresh();
+                return RefreshIndicator(
+                  onRefresh: () {
+                    context.read<HomeCubit>().refresh();
 
-                          return context
-                              .read<HomeCubit>()
-                              .stream
-                              .firstWhere((e) => !e.isRefreshing);
-                        },
+                    return context
+                        .read<HomeCubit>()
+                        .stream
+                        .firstWhere((e) => !e.isRefreshing);
+                  },
+                  child: Column(
+                    children: [
+                      Visibility(
+                        visible: state.isDeleting,
+                        replacement: const SizedBox(height: 5),
+                        child: const LinearProgressIndicator(
+                          color: Colors.pinkAccent,
+                          minHeight: 5,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Expanded(
                         child: ListView.builder(
                           itemCount: state.shoppingLists.length,
                           itemBuilder: (context, index) {
@@ -75,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               } else {
                 return const Center(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
+import 'package:shopping/presentation/common/delete_background.dart';
 
 class ShoppingListItem extends StatelessWidget {
   final ShoppingList list;
@@ -19,26 +20,7 @@ class ShoppingListItem extends StatelessWidget {
           return Future.value(false);
         }
       },
-      background: Container(
-        padding: const EdgeInsets.only(left: 16),
-        color: Colors.red,
-        child: Row(
-          children: const [
-            Icon(
-              size: 20,
-              Icons.delete,
-              color: Colors.white,
-            ),
-            SizedBox(width: 8),
-            Text(
-              'Delete',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
-      ),
+      background: const DeleteBackground(),
       secondaryBackground: Container(
         color: Colors.transparent,
       ),
