@@ -9,7 +9,7 @@ class ShoppingListDto with _$ShoppingListDto {
     required String id,
     required String title,
     required int created,
-    required Map<String, bool> items,
+    Map<String, bool>? items,
   }) = _ShoppingListDto;
 
   factory ShoppingListDto.fromJson(Map<String, dynamic> json) =>

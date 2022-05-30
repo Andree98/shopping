@@ -7,7 +7,6 @@ import 'package:shopping/presentation/create/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/home/data/presentation_constants.dart';
 
 class CreateListScreen extends StatefulWidget {
-  static const String id = '/create';
 
   const CreateListScreen({super.key});
 

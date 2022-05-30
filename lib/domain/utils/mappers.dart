@@ -8,9 +8,10 @@ extension ShoppingListDtoMapper on ShoppingListDto {
       id: id,
       title: title,
       created: created,
-      items: items.entries
-          .map((e) => ListItem(label: e.key, isChecked: e.value))
-          .toList(),
+      items: items?.entries
+              .map((e) => ListItem(label: e.key, isChecked: e.value))
+              .toList() ??
+          [],
     );
   }
 }

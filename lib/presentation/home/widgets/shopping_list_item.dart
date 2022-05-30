@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shopping/application/details/list_details_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
+import 'package:shopping/injection.dart';
 import 'package:shopping/presentation/common/delete_background.dart';
+import 'package:shopping/presentation/details/screens/list_details_screen.dart';
 
 class ShoppingListItem extends StatelessWidget {
   final ShoppingList list;
@@ -30,6 +33,16 @@ class ShoppingListItem extends StatelessWidget {
           title: Text(list.title),
           trailing: Text(_formatDate()),
           subtitle: Text(_getCompletionStatus()),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (_) => getIt<ListDetailsBloc>()
+                  ..add(ListDetailsEvent.setItems(list.items)),
+                child: ListDetailsScreen(title: list.title),
+              ),
+            ),
+          ),
         ),
       ),
     );
