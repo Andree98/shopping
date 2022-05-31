@@ -5,9 +5,7 @@ import 'package:shopping/domain/details/list_details_interface.dart';
 import 'package:shopping/domain/entities/list_item.dart';
 
 part 'list_details_bloc.freezed.dart';
-
 part 'list_details_event.dart';
-
 part 'list_details_state.dart';
 
 @injectable
@@ -19,17 +17,20 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
       (event, emit) => event.map(
         setItems: (e) => emit(state.copyWith(items: e.items)),
         checkStatusChanged: (e) =>
-            _onCheckStateChangedEvent(e.index, e.isChecked, emit),
+            _onCheckStateChangedEvent(e.id, e.index, e.isChecked, emit),
       ),
     );
   }
 
   void _onCheckStateChangedEvent(
+    String id,
     int index,
     bool isChecked,
     Emitter<ListDetailsState> emit,
   ) {
     final updatedItem = state.items[index].copyWith(isChecked: isChecked);
+
+    _interface.updateCheckStatus(id, updatedItem);
 
     final updatedList = List<ListItem>.from(state.items)
       ..removeAt(index)

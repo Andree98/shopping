@@ -39,7 +39,7 @@ class ShoppingListItem extends StatelessWidget {
               builder: (_) => BlocProvider(
                 create: (_) => getIt<ListDetailsBloc>()
                   ..add(ListDetailsEvent.setItems(list.items)),
-                child: ListDetailsScreen(title: list.title),
+                child: ListDetailsScreen(shoppingList: list),
               ),
             ),
           ),

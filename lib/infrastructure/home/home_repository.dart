@@ -25,7 +25,7 @@ class HomeRepository implements HomeInterface {
         return Failure(response.statusCode);
       }
     } catch (_) {
-      return const Failure(HttpStatus.serviceUnavailable);
+      return const Failure(kClientError);
     }
   }
 
@@ -40,7 +40,7 @@ class HomeRepository implements HomeInterface {
         return Failure(response.statusCode);
       }
     } catch (_) {
-      return const Failure(HttpStatus.serviceUnavailable);
+      return const Failure(kClientError);
     }
   }
 
@@ -55,7 +55,7 @@ class HomeRepository implements HomeInterface {
         return Failure(response.statusCode);
       }
     } catch (e) {
-      return const Failure(HttpStatus.serviceUnavailable);
+      return const Failure(kClientError);
     }
   }
 

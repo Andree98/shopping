@@ -28,7 +28,7 @@ class CreateListRepository implements CreateListInterface {
       }
     } catch (e) {
       // Here I would record the error in Firebase Crashlytics
-      return const Failure(HttpStatus.serviceUnavailable);
+      return const Failure(kClientError);
     }
   }
 

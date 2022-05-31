@@ -13,12 +13,11 @@ import 'package:shopping/infrastructure/data/constants.dart';
 @LazySingleton(as: ListDetailsInterface)
 class ListDetailsRepository implements ListDetailsInterface {
   @override
-  Future<Result<int, Unit>> updateCheckStatus(
-      String id, List<ListItem> items) async {
+  Future<Result<int, Unit>> updateCheckStatus(String id, ListItem item) async {
     try {
       final response = await http.patch(
         Uri.parse('$kBaseUrl/$id/items/$kJson'),
-        body: await compute(_parseToJson, items),
+        body: await compute(_parseToJson, item),
       );
 
       if (response.statusCode == HttpStatus.ok) {
@@ -27,13 +26,11 @@ class ListDetailsRepository implements ListDetailsInterface {
         return Failure(response.statusCode);
       }
     } catch (e) {
-      return const Failure(HttpStatus.serviceUnavailable);
+      return const Failure(kClientError);
     }
   }
 
-  String _parseToJson(List<ListItem> items) {
-    return jsonEncode(
-      Map.fromEntries(items.map((e) => MapEntry(e.label, e.isChecked))),
-    );
+  String _parseToJson(ListItem item) {
+    return jsonEncode({item.label: item.isChecked});
   }
 }

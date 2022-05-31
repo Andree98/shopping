@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
+import 'package:shopping/domain/entities/shopping_list.dart';
 
 class ListDetailsScreen extends StatelessWidget {
-  final String title;
+  final ShoppingList shoppingList;
 
-  const ListDetailsScreen({required this.title, super.key});
+  const ListDetailsScreen({required this.shoppingList, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(shoppingList.title),
       ),
       body: BlocBuilder<ListDetailsBloc, ListDetailsState>(
         builder: (context, state) {
@@ -31,6 +32,7 @@ class ListDetailsScreen extends StatelessWidget {
                   value: item.isChecked,
                   onChanged: (checked) => context.read<ListDetailsBloc>().add(
                         ListDetailsEvent.checkStatusChanged(
+                          shoppingList.id,
                           index,
                           checked!,
                         ),
