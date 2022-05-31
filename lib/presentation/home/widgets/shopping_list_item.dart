@@ -52,16 +52,9 @@ class ShoppingListItem extends StatelessWidget {
   }
 
   String _formatDate() {
-    final now = DateTime.now();
     final createdDate = DateTime.fromMillisecondsSinceEpoch(list.created);
 
-    if (createdDate.day == now.day) {
-      // if the list was created on the same day, show the hours and minutes
-      return DateFormat.Hm().format(createdDate);
-    } else {
-      // if not, show the month and the day
-      return DateFormat.MMMd().format(createdDate);
-    }
+    return DateFormat.MMMd().format(createdDate);
   }
 
   String _getCompletionStatus() {

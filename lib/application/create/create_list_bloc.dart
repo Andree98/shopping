@@ -34,7 +34,12 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
   }
 
   void _onAddItemEvent(String label, Emitter<CreateListState> emit) {
-    final listItem = ListItem(label: label, isChecked: false);
+    final listItem = ListItem(
+      id: const Uuid().v4(),
+      label: label,
+      isChecked: false,
+    );
+
     emit(state.copyWith(items: List.from(state.items)..add(listItem)));
   }
 
@@ -70,7 +75,7 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
       );
 
       shoppingList = ShoppingList(
-        id: const Uuid().v4(),
+        id: const Uuid().v1(),
         title: state.title.get(),
         created: DateTime.now().millisecondsSinceEpoch,
         items: state.items,

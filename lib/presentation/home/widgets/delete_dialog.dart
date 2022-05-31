@@ -7,7 +7,7 @@ class DeleteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Delete All'),
-      content: const Text('This action cannot be undone'),
+      content: const Text('Delete all items? This action cannot be undone'),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, false),

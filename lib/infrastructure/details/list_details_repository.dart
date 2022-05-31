@@ -16,7 +16,7 @@ class ListDetailsRepository implements ListDetailsInterface {
   Future<Result<int, Unit>> updateCheckStatus(String id, ListItem item) async {
     try {
       final response = await http.patch(
-        Uri.parse('$kBaseUrl/$id/items/$kJson'),
+        Uri.parse('$kBaseUrl/$id/$kItemsField/${item.id}$kJson'),
         body: await compute(_parseToJson, item),
       );
 
@@ -31,6 +31,6 @@ class ListDetailsRepository implements ListDetailsInterface {
   }
 
   String _parseToJson(ListItem item) {
-    return jsonEncode({item.label: item.isChecked});
+    return jsonEncode(item.toJson());
   }
 }
