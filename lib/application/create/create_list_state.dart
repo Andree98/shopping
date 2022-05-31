@@ -8,6 +8,7 @@ class CreateListState with _$CreateListState {
     required bool showError,
     required List<ListItem> items,
     Result? saveListResult,
+    ShoppingList? createdList,
   }) = _CreateListState;
 
   factory CreateListState.initial() => CreateListState(

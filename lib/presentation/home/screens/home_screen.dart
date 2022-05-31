@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
+import 'package:shopping/domain/entities/shopping_list.dart';
 import 'package:shopping/injection.dart';
 import 'package:shopping/presentation/create/screens/create_list_screen.dart';
 import 'package:shopping/presentation/home/widgets/delete_dialog.dart';
@@ -34,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'New list',
-        onPressed: () => Navigator.push(
+        onPressed: () => Navigator.push<ShoppingList>(
           context,
           MaterialPageRoute(
             builder: (_) => BlocProvider(
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const CreateListScreen(),
             ),
           ),
-        ),
+        ).then((list) => context.read<HomeCubit>().addShoppingList(list)),
         child: const Icon(Icons.add),
       ),
       body: BlocConsumer<HomeCubit, HomeState>(

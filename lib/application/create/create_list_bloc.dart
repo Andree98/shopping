@@ -58,11 +58,18 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
 
   Future<void> _onSaveListEvent(Emitter<CreateListState> emit) async {
     Result? saveListResult;
+    ShoppingList? shoppingList;
 
     if (state.title.isValid()) {
-      emit(state.copyWith(isSaving: true, saveListResult: null));
+      emit(
+        state.copyWith(
+          isSaving: true,
+          saveListResult: null,
+          createdList: null,
+        ),
+      );
 
-      final shoppingList = ShoppingList(
+      shoppingList = ShoppingList(
         id: const Uuid().v4(),
         title: state.title.get(),
         created: DateTime.now().millisecondsSinceEpoch,
@@ -77,6 +84,7 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
         isSaving: saveListResult?.isSuccess() ?? false,
         showError: true,
         saveListResult: saveListResult,
+        createdList: shoppingList,
       ),
     );
   }

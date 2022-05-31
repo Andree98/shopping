@@ -63,8 +63,27 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  void updateShoppingList(ShoppingList list) {
+    final index = state.shoppingLists.indexWhere((e) => e.id == list.id);
+
+    final updatedList = List<ShoppingList>.from(state.shoppingLists)
+      ..removeAt(index)
+      ..insert(index, list);
+
+    emit(state.copyWith(shoppingLists: updatedList));
+  }
+
+  void addShoppingList(ShoppingList? list) {
+    if (list != null) {
+      final newList = List<ShoppingList>.from(state.shoppingLists)..add(list);
+
+      emit(state.copyWith(shoppingLists: newList));
+    }
+  }
+
   void refresh() {
     emit(state.copyWith(isRefreshing: true));
+
     loadShoppingLists();
   }
 }

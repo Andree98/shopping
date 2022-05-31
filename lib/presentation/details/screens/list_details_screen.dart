@@ -10,38 +10,44 @@ class ListDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(shoppingList.title),
-      ),
-      body: BlocBuilder<ListDetailsBloc, ListDetailsState>(
-        builder: (context, state) {
-          return ListView.builder(
-            itemCount: state.items.length,
-            itemBuilder: (context, index) {
-              final item = state.items[index];
-              return Card(
-                child: CheckboxListTile(
-                  title: Text(
-                    item.label,
-                    style: TextStyle(
-                      decoration:
-                          item.isChecked ? TextDecoration.lineThrough : null,
-                    ),
-                  ),
-                  value: item.isChecked,
-                  onChanged: (checked) => context.read<ListDetailsBloc>().add(
-                        ListDetailsEvent.checkStatusChanged(
-                          shoppingList.id,
-                          index,
-                          checked!,
-                        ),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pop(context, context.read<ListDetailsBloc>().state.items);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(shoppingList.title),
+        ),
+        body: BlocBuilder<ListDetailsBloc, ListDetailsState>(
+          builder: (context, state) {
+            return ListView.builder(
+              itemCount: state.items.length,
+              itemBuilder: (context, index) {
+                final item = state.items[index];
+                return Card(
+                  child: CheckboxListTile(
+                    title: Text(
+                      item.label,
+                      style: TextStyle(
+                        decoration:
+                            item.isChecked ? TextDecoration.lineThrough : null,
                       ),
-                ),
-              );
-            },
-          );
-        },
+                    ),
+                    value: item.isChecked,
+                    onChanged: (checked) => context.read<ListDetailsBloc>().add(
+                          ListDetailsEvent.checkStatusChanged(
+                            shoppingList.id,
+                            index,
+                            checked!,
+                          ),
+                        ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

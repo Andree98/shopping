@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
+import 'package:shopping/domain/entities/list_item.dart';
 import 'package:shopping/domain/entities/shopping_list.dart';
 import 'package:shopping/injection.dart';
 import 'package:shopping/presentation/common/delete_background.dart';
@@ -33,7 +34,7 @@ class ShoppingListItem extends StatelessWidget {
           title: Text(list.title),
           trailing: Text(_formatDate()),
           subtitle: Text(_getCompletionStatus()),
-          onTap: () => Navigator.push(
+          onTap: () => Navigator.push<List<ListItem>>(
             context,
             MaterialPageRoute(
               builder: (_) => BlocProvider(
@@ -42,7 +43,9 @@ class ShoppingListItem extends StatelessWidget {
                 child: ListDetailsScreen(shoppingList: list),
               ),
             ),
-          ),
+          ).then((value) => context
+              .read<HomeCubit>()
+              .updateShoppingList(list.copyWith(items: value!))),
         ),
       ),
     );

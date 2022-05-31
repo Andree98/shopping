@@ -139,7 +139,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
             );
           } else {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            Navigator.pop(context);
+            Navigator.pop(context, state.createdList);
           }
         },
       ),
