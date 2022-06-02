@@ -4,6 +4,11 @@ part of 'list_details_bloc.dart';
 class ListDetailsEvent with _$ListDetailsEvent {
   const factory ListDetailsEvent.setItems(List<ListItem> items) = _SetItems;
 
+  const factory ListDetailsEvent.deleteItem(
+    String listId,
+    String itemId,
+  ) = _DeleteItem;
+
   const factory ListDetailsEvent.checkStatusChanged(
     String id,
     int index,

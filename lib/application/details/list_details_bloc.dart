@@ -14,8 +14,9 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
 
   ListDetailsBloc(this._interface) : super(ListDetailsState.initial()) {
     on<ListDetailsEvent>(
-      (event, emit) => event.map(
+      (event, emit) async => event.map(
         setItems: (e) => emit(state.copyWith(items: e.items)),
+        deleteItem: (e) async => _onDeleteItemEvent(e.listId, e.itemId, emit),
         checkStatusChanged: (e) =>
             _onCheckStateChangedEvent(e.id, e.index, e.isChecked, emit),
       ),
@@ -37,5 +38,18 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
       ..insert(index, updatedItem);
 
     emit(state.copyWith(items: updatedList));
+  }
+
+  Future<void> _onDeleteItemEvent(
+    String listId,
+    String itemId,
+    Emitter<ListDetailsState> emit,
+  ) async {
+    final itemsList = List<ListItem>.from(state.items);
+    final result = await _interface.deleteItem(listId, itemId);
+
+    if (result.isSuccess()) itemsList.removeWhere((e) => e.id == itemId);
+
+    emit(state.copyWith(items: itemsList));
   }
 }

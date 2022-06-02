@@ -30,6 +30,23 @@ class ListDetailsRepository implements ListDetailsInterface {
     }
   }
 
+  @override
+  Future<Result<int, Unit>> deleteItem(String listId, String itemId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$kBaseUrl/$listId/$kItemsField/$itemId$kJson'),
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        return const Success(unit);
+      } else {
+        return Failure(response.statusCode);
+      }
+    } catch (_) {
+      return const Failure(kClientError);
+    }
+  }
+
   String _parseToJson(ListItem item) {
     return jsonEncode(item.toJson());
   }
