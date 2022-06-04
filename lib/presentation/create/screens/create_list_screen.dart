@@ -145,6 +145,8 @@ class _CreateListScreenState extends State<CreateListScreen> {
   }
 
   Future<void> _openNewItemDialog() async {
+    if (FocusScope.of(context).hasFocus) FocusScope.of(context).unfocus();
+
     final itemLabel = await showDialog<String>(
       context: context,
       builder: (_) => const NewItemDialog(),

@@ -1,6 +1,7 @@
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/create/entities/validated_object.dart';
 import 'package:shopping/domain/create/entities/validation_failure.dart';
+import 'package:shopping/domain/create/utils/title_constants.dart';
 
 class ListTitle extends ValidatedObject {
   @override
@@ -12,11 +13,9 @@ class ListTitle extends ValidatedObject {
 
   static Result<ValidationFailure, String> _validateTitle(String input) {
     if (input.isEmpty) {
-      return const Failure(ValidationFailure.empty('Title cannot be empty'));
+      return const Failure(ValidationFailure.empty(kEmptyTitleError));
     } else if (input.length < 3) {
-      return const Failure(
-        ValidationFailure.invalid('Title must contain at least 3 characters'),
-      );
+      return const Failure(ValidationFailure.invalid(kInvalidTitleError));
     } else {
       return Success(input);
     }

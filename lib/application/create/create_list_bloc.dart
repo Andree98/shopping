@@ -5,7 +5,7 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/create/create_list_interface.dart';
-import 'package:shopping/domain/create/entities/title.dart';
+import 'package:shopping/domain/create/entities/list_title.dart';
 import 'package:uuid/uuid.dart';
 
 part 'create_list_bloc.freezed.dart';
