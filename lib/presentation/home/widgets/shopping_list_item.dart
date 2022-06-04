@@ -6,7 +6,7 @@ import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/details/entities/details_action.dart';
 import 'package:shopping/injection.dart';
-import 'package:shopping/presentation/common/delete_background.dart';
+import 'package:shopping/presentation/common/widgets/delete_background.dart';
 import 'package:shopping/presentation/details/screens/list_details_screen.dart';
 
 class ShoppingListItem extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
-import 'package:shopping/presentation/common/delete_background.dart';
+import 'package:shopping/presentation/common/widgets/delete_background.dart';
 
 class CreateListItem extends StatelessWidget {
   final ListItem item;

@@ -4,8 +4,8 @@ import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/injection.dart';
+import 'package:shopping/presentation/common/widgets/delete_dialog.dart';
 import 'package:shopping/presentation/create/screens/create_list_screen.dart';
-import 'package:shopping/presentation/home/widgets/delete_dialog.dart';
 import 'package:shopping/presentation/home/widgets/shopping_list_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             tooltip: 'Delete all',
             splashRadius: 24,
-            onPressed: () async => _openDeleteDialog(),
+            onPressed: () async => _showDeleteDialog(),
             icon: const Icon(
               Icons.delete,
               size: 20,
@@ -133,10 +133,13 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<HomeCubit>().loadShoppingLists();
   }
 
-  Future<void> _openDeleteDialog() async {
+  Future<void> _showDeleteDialog() async {
     final isConfirmed = await showDialog<bool>(
       context: context,
-      builder: (_) => const DeleteDialog(),
+      builder: (_) => const DeleteDialog(
+        title: 'Delete All',
+        body: 'Delete all lists? This action cannot be undone',
+      ),
     );
 
     if (isConfirmed ?? false) {

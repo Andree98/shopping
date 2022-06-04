@@ -9,9 +9,7 @@ import 'package:shopping/domain/create/entities/title.dart';
 import 'package:uuid/uuid.dart';
 
 part 'create_list_bloc.freezed.dart';
-
 part 'create_list_event.dart';
-
 part 'create_list_state.dart';
 
 @injectable
@@ -37,7 +35,7 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
 
   void _onAddItemEvent(String label, Emitter<CreateListState> emit) {
     final listItem = ListItem(
-      id: const Uuid().v4(),
+      id: const Uuid().v1(),
       label: label,
       isChecked: false,
     );
