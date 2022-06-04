@@ -1,9 +1,7 @@
-import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping/domain/entities/list_item.dart';
-import 'package:shopping/domain/entities/unit.dart';
+import 'package:shopping/domain/common/entities/list_item.dart';
 
 abstract class ListDetailsInterface {
-  Future<Result<int, Unit>> updateCheckStatus(String id, ListItem items);
+  Future<void> updateCheckStatus(String id, ListItem items);
 
-  Future<Result<int, Unit>> deleteItem(String listId, String itemId);
+  void deleteItem(String listId, String itemId);
 }

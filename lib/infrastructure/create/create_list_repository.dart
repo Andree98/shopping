@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
+import 'package:shopping/domain/common/entities/shopping_list.dart';
+import 'package:shopping/domain/common/entities/unit.dart';
 import 'package:shopping/domain/create/create_list_interface.dart';
-import 'package:shopping/domain/entities/shopping_list.dart';
-import 'package:shopping/domain/entities/unit.dart';
 import 'package:shopping/domain/utils/mappers.dart';
 import 'package:shopping/infrastructure/data/constants.dart';
 

@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping/domain/entities/shopping_list.dart';
+import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/home/home_interface.dart';
 
 part 'home_cubit.freezed.dart';

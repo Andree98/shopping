@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:shopping/domain/entities/list_item.dart';
+import 'package:shopping/domain/common/entities/list_item.dart';
 
 part 'shopping_list_dto.freezed.dart';
 part 'shopping_list_dto.g.dart';

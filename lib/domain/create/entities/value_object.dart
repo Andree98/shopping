@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:multiple_result/multiple_result.dart';
-import 'package:shopping/domain/utils/input_failure.dart';
+import 'package:shopping/domain/create/entities/input_failure.dart';
 
 @immutable
 abstract class ValueObject<T> {

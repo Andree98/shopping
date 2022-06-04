@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/domain/details/list_details_interface.dart';
-import 'package:shopping/domain/entities/list_item.dart';
 
 part 'list_details_bloc.freezed.dart';
 part 'list_details_event.dart';
@@ -14,9 +14,9 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
 
   ListDetailsBloc(this._interface) : super(ListDetailsState.initial()) {
     on<ListDetailsEvent>(
-      (event, emit) async => event.map(
+          (event, emit) => event.map(
         setItems: (e) => emit(state.copyWith(items: e.items)),
-        deleteItem: (e) async => _onDeleteItemEvent(e.listId, e.itemId, emit),
+        deleteItem: (e) => _onDeleteItemEvent(e.listId, e.itemId, emit),
         checkStatusChanged: (e) =>
             _onCheckStateChangedEvent(e.id, e.index, e.isChecked, emit),
       ),
@@ -40,15 +40,16 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
     emit(state.copyWith(items: updatedList));
   }
 
-  Future<void> _onDeleteItemEvent(
+  void _onDeleteItemEvent(
     String listId,
     String itemId,
     Emitter<ListDetailsState> emit,
-  ) async {
+  ) {
     final itemsList = List<ListItem>.from(state.items);
-    final result = await _interface.deleteItem(listId, itemId);
 
-    if (result.isSuccess()) itemsList.removeWhere((e) => e.id == itemId);
+    _interface.deleteItem(listId, itemId);
+
+    itemsList.removeWhere((e) => e.id == itemId);
 
     emit(state.copyWith(items: itemsList));
   }

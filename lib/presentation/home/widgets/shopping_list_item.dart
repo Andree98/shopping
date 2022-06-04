@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
 import 'package:shopping/application/home/home_cubit.dart';
-import 'package:shopping/domain/entities/list_item.dart';
-import 'package:shopping/domain/entities/shopping_list.dart';
+import 'package:shopping/domain/common/entities/shopping_list.dart';
+import 'package:shopping/domain/details/entities/details_action.dart';
 import 'package:shopping/injection.dart';
 import 'package:shopping/presentation/common/delete_background.dart';
 import 'package:shopping/presentation/details/screens/list_details_screen.dart';
@@ -34,7 +34,7 @@ class ShoppingListItem extends StatelessWidget {
           title: Text(list.title),
           trailing: Text(_formatDate()),
           subtitle: Text(_getCompletionStatus()),
-          onTap: () => Navigator.push<List<ListItem>>(
+          onTap: () => Navigator.push<DetailsAction>(
             context,
             MaterialPageRoute(
               builder: (_) => BlocProvider(
@@ -43,9 +43,18 @@ class ShoppingListItem extends StatelessWidget {
                 child: ListDetailsScreen(shoppingList: list),
               ),
             ),
-          ).then((value) => context
-              .read<HomeCubit>()
-              .updateShoppingList(list.copyWith(items: value!))),
+          ).then(
+            (value) {
+              if (value != null) {
+                value.when(
+                    updated: (e) => context
+                        .read<HomeCubit>()
+                        .updateShoppingList(list.copyWith(items: e)),
+                    deleted: () =>
+                        context.read<HomeCubit>().removeShoppingList(list.id));
+              }
+            },
+          ),
         ),
       ),
     );
