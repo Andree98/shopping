@@ -17,7 +17,7 @@ class ListDetailsRepository implements ListDetailsInterface {
         body: await compute(_parseToJson, item),
       );
     } catch (e) {
-      //TODO Log error
+      // Error would be logged on crashlytics
     }
   }
 
@@ -26,7 +26,7 @@ class ListDetailsRepository implements ListDetailsInterface {
     try {
       http.delete(Uri.parse('$kBaseUrl/$listId/$kItemsField/$itemId$kJson'));
     } catch (_) {
-      //TODO Log error
+      // Error would be logged on crashlytics
     }
   }
 

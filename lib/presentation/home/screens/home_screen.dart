@@ -43,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const CreateListScreen(),
             ),
           ),
-        ).then((list) => context.read<HomeCubit>().addShoppingList(list)),
+        ).then((list) {
+          if (list != null) context.read<HomeCubit>().addShoppingList(list);
+        }),
         child: const Icon(Icons.add),
       ),
       body: BlocConsumer<HomeCubit, HomeState>(

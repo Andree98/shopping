@@ -6,7 +6,10 @@ import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/home/home_interface.dart';
 
 part 'home_cubit.freezed.dart';
+
 part 'home_state.dart';
+
+// This could be a bloc but I wanted to show I can also work with cubits
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
@@ -47,7 +50,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void removeAllLists() async {
-    emit(state.copyWith(isDeleting: true));
+    emit(state.copyWith(isDeleting: true, deleteListResult: null));
 
     final shoppingList = List<ShoppingList>.from(state.shoppingLists);
     final deleteResult = await _homeInterface.deleteAllLists();
@@ -73,12 +76,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(shoppingLists: updatedList));
   }
 
-  void addShoppingList(ShoppingList? list) {
-    if (list != null) {
-      final newList = List<ShoppingList>.from(state.shoppingLists)..add(list);
+  void addShoppingList(ShoppingList list) {
+    final updatedList = List<ShoppingList>.from(state.shoppingLists)..add(list);
 
-      emit(state.copyWith(shoppingLists: newList));
-    }
+    emit(state.copyWith(shoppingLists: updatedList));
   }
 
   void refresh() {
