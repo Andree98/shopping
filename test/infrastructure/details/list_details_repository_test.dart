@@ -14,7 +14,7 @@ import '../../utils/mocks.dart';
 import '../../utils/test_utils.dart';
 
 void main() {
-  final list = shoppingList;
+  final list = createShoppingList();
 
   late MockHttpClient mockClient;
   late ListDetailsRepository repository;
@@ -32,7 +32,7 @@ void main() {
       () async {
         // Arrange
         final response = Response(
-          jsonEncode(shoppingList.toShoppingListDto().toJson()),
+          jsonEncode(createShoppingList().toShoppingListDto().toJson()),
           HttpStatus.ok,
         );
 
@@ -58,7 +58,7 @@ void main() {
         const statusCode = HttpStatus.unauthorized;
 
         final response = Response(
-          jsonEncode(shoppingList.toShoppingListDto().toJson()),
+          jsonEncode(createShoppingList().toShoppingListDto().toJson()),
           statusCode,
         );
 
@@ -90,7 +90,7 @@ void main() {
   });
 
   group('updateCheckStatus', () {
-    final item = listItem;
+    final item = createListItem();
 
     final baseUrl = Uri.parse(
       '$kBaseUrl/${list.id}/$kItemsField/${item.id}$kJson',
@@ -113,7 +113,7 @@ void main() {
   });
 
   group('addItem', () {
-    final item = listItem;
+    final item = createListItem();
 
     final baseUrl = Uri.parse(
       '$kBaseUrl/${list.id}/$kItemsField/${item.id}$kJson',
@@ -136,7 +136,7 @@ void main() {
   });
 
   group('deleteItem', () {
-    final item = listItem;
+    final item = createListItem();
 
     final baseUrl = Uri.parse(
       '$kBaseUrl/${list.id}/$kItemsField/${item.id}$kJson',

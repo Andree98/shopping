@@ -66,14 +66,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updateShoppingList(ShoppingList list) {
-    print(list);
     final index = state.shoppingLists.indexWhere((e) => e.id == list.id);
 
     final updatedList = List<ShoppingList>.from(state.shoppingLists)
       ..removeAt(index)
       ..insert(index, list);
-
-    print(updatedList);
 
     emit(state.copyWith(shoppingLists: updatedList));
   }

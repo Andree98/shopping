@@ -39,7 +39,7 @@ void main() {
       () async {
         // Arrange
         final response = Response(
-          jsonEncode({'1': shoppingList.toShoppingListDto().toJson()}),
+          jsonEncode({'1': createShoppingList().toShoppingListDto().toJson()}),
           HttpStatus.ok,
         );
 
@@ -165,7 +165,7 @@ void main() {
   });
 
   group('deleteList', () {
-    final listId = shoppingList.id;
+    final listId = createShoppingList().id;
     final baseUrl = Uri.parse('$kBaseUrl/$listId$kJson');
 
     test(

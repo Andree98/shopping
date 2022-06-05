@@ -23,7 +23,7 @@ void main() {
   });
 
   group('createList', () {
-    final list = shoppingList;
+    final list = createShoppingList();
     final baseUrl = Uri.parse('$kBaseUrl/${list.id}$kJson');
     final encodedBody = jsonEncode(list.toShoppingListDto().toJson());
 
