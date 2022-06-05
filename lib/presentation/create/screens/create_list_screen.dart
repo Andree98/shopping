@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
+import 'package:shopping/presentation/common/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/create/widgets/create_list_item.dart';
-import 'package:shopping/presentation/create/widgets/new_item_dialog.dart';
 
 class CreateListScreen extends StatefulWidget {
   const CreateListScreen({super.key});
@@ -111,7 +111,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'New item',
-        onPressed: () async => _openNewItemDialog(),
+        onPressed: () async => _showNewItemDialog(),
         child: const Icon(Icons.create),
       ),
     );
@@ -144,7 +144,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
         );
   }
 
-  Future<void> _openNewItemDialog() async {
+  Future<void> _showNewItemDialog() async {
     if (FocusScope.of(context).hasFocus) FocusScope.of(context).unfocus();
 
     final itemLabel = await showDialog<String>(

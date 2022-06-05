@@ -4,6 +4,7 @@ import 'package:shopping/application/details/list_details_bloc.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/details/entities/details_action.dart';
 import 'package:shopping/presentation/common/widgets/delete_dialog.dart';
+import 'package:shopping/presentation/common/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/details/widgets/details_list_item.dart';
 
 class ListDetailsScreen extends StatefulWidget {
@@ -51,6 +52,11 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
             );
           },
         ),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'New item',
+          onPressed: () async => _showNewItemDialog(),
+          child: const Icon(Icons.create),
+        ),
       ),
     );
   }
@@ -68,6 +74,23 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
       if (!mounted) return;
 
       Navigator.pop(context, const DetailsAction.deleted());
+    }
+  }
+
+  Future<void> _showNewItemDialog() async {
+    if (FocusScope.of(context).hasFocus) FocusScope.of(context).unfocus();
+
+    final itemLabel = await showDialog<String>(
+      context: context,
+      builder: (_) => const NewItemDialog(),
+    );
+
+    if (itemLabel != null && itemLabel.isNotEmpty) {
+      if (!mounted) return;
+
+      context
+          .read<ListDetailsBloc>()
+          .add(ListDetailsEvent.addItem(widget.shoppingList.id, itemLabel));
     }
   }
 }

@@ -8,5 +8,7 @@ abstract class ListDetailsInterface {
 
   Future<void> updateCheckStatus(String id, ListItem items);
 
+  Future<void> addItem(String listId, ListItem item);
+
   void deleteItem(String listId, String itemId);
 }
