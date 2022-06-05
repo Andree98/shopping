@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
-import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/details/entities/details_action.dart';
 import 'package:shopping/presentation/common/widgets/delete_dialog.dart';
 import 'package:shopping/presentation/common/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/details/widgets/details_list_item.dart';
 
 class ListDetailsScreen extends StatefulWidget {
-  final ShoppingList shoppingList;
-
-  const ListDetailsScreen({required this.shoppingList, super.key});
+  const ListDetailsScreen({super.key});
 
   @override
   State<ListDetailsScreen> createState() => _ListDetailsScreenState();
@@ -23,17 +20,20 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
       onWillPop: () {
         Navigator.pop(
           context,
-          DetailsAction.updated(context.read<ListDetailsBloc>().state.items),
+          DetailsAction.updated(
+              context.read<ListDetailsBloc>().state.shoppingList),
         );
 
         return Future.value(false);
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.shoppingList.title),
+          title: Text(
+            context.watch<ListDetailsBloc>().state.shoppingList?.title ?? '',
+          ),
           actions: [
             IconButton(
-              onPressed: () async => _showDeleteDialog(),
+              onPressed: () async => !_hasErrors() ? _showDeleteDialog() : null,
               icon: const Icon(Icons.delete),
               splashRadius: 24,
               tooltip: 'Delete List',
@@ -42,19 +42,37 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
         ),
         body: BlocBuilder<ListDetailsBloc, ListDetailsState>(
           builder: (context, state) {
-            return ListView.builder(
-              itemCount: state.items.length,
-              itemBuilder: (context, index) => DetailsListItem(
-                item: state.items[index],
-                listId: widget.shoppingList.id,
-                index: index,
-              ),
-            );
+            if (state.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              if (state.loadListResult!.isSuccess() &&
+                  state.shoppingList != null) {
+                if (state.shoppingList!.items.isNotEmpty) {
+                  return ListView.builder(
+                    itemCount: state.shoppingList!.items.length,
+                    itemBuilder: (context, index) => DetailsListItem(
+                      item: state.shoppingList!.items[index],
+                      index: index,
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: Text('No items'),
+                  );
+                }
+              } else {
+                return const Center(
+                  child: Text('An error has occurred'),
+                );
+              }
+            }
           },
         ),
         floatingActionButton: FloatingActionButton(
           tooltip: 'New item',
-          onPressed: () async => _showNewItemDialog(),
+          onPressed: () async => !_hasErrors() ? _showNewItemDialog() : null,
           child: const Icon(Icons.create),
         ),
       ),
@@ -88,9 +106,14 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
     if (itemLabel != null && itemLabel.isNotEmpty) {
       if (!mounted) return;
 
-      context
-          .read<ListDetailsBloc>()
-          .add(ListDetailsEvent.addItem(widget.shoppingList.id, itemLabel));
+      context.read<ListDetailsBloc>().add(ListDetailsEvent.addItem(itemLabel));
     }
+  }
+
+  bool _hasErrors() {
+    final state = context.read<ListDetailsBloc>().state;
+
+    return (state.loadListResult?.isFailure() ?? true) ||
+        state.shoppingList == null;
   }
 }

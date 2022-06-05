@@ -39,19 +39,20 @@ class ShoppingListItem extends StatelessWidget {
             MaterialPageRoute(
               builder: (_) => BlocProvider(
                 create: (_) => getIt<ListDetailsBloc>()
-                  ..add(ListDetailsEvent.setItems(list.items)),
-                child: ListDetailsScreen(shoppingList: list),
+                  ..add(ListDetailsEvent.loadShoppingList(list.id)),
+                child: const ListDetailsScreen(),
               ),
             ),
           ).then(
             (value) {
               if (value != null) {
                 value.when(
-                    updated: (e) => context
-                        .read<HomeCubit>()
-                        .updateShoppingList(list.copyWith(items: e)),
-                    deleted: () =>
-                        context.read<HomeCubit>().removeShoppingList(list.id));
+                  updated: (e) => e != null
+                      ? context.read<HomeCubit>().updateShoppingList(e)
+                      : null,
+                  deleted: () =>
+                      context.read<HomeCubit>().removeShoppingList(list.id),
+                );
               }
             },
           ),

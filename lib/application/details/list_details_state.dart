@@ -3,10 +3,12 @@ part of 'list_details_bloc.dart';
 @freezed
 class ListDetailsState with _$ListDetailsState {
   const factory ListDetailsState({
-    required List<ListItem> items,
+    required bool isLoading,
+    ShoppingList? shoppingList,
+    Result? loadListResult,
   }) = _ListDetailsState;
 
   factory ListDetailsState.initial() => const ListDetailsState(
-        items: [],
+    isLoading: true,
       );
 }

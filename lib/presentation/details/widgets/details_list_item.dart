@@ -6,12 +6,10 @@ import 'package:shopping/presentation/common/widgets/delete_background.dart';
 
 class DetailsListItem extends StatelessWidget {
   final ListItem item;
-  final String listId;
   final int index;
 
   const DetailsListItem({
     required this.item,
-    required this.listId,
     required this.index,
     super.key,
   });
@@ -21,12 +19,9 @@ class DetailsListItem extends StatelessWidget {
     return Dismissible(
       confirmDismiss: (direction) {
         if (direction == DismissDirection.startToEnd) {
-          context.read<ListDetailsBloc>().add(
-                ListDetailsEvent.deleteItem(
-                  listId,
-                  item.id,
-                ),
-              );
+          context
+              .read<ListDetailsBloc>()
+              .add(ListDetailsEvent.deleteItem(item.id));
           return Future.value(true);
         } else {
           return Future.value(false);
@@ -46,13 +41,9 @@ class DetailsListItem extends StatelessWidget {
             ),
           ),
           value: item.isChecked,
-          onChanged: (checked) => context.read<ListDetailsBloc>().add(
-                ListDetailsEvent.checkStatusChanged(
-                  listId,
-                  index,
-                  checked!,
-                ),
-              ),
+          onChanged: (checked) => context
+              .read<ListDetailsBloc>()
+              .add(ListDetailsEvent.checkStatusChanged(index, checked!)),
         ),
       ),
     );

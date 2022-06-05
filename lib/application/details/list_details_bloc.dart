@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
+import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/details/list_details_interface.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,61 +17,73 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
 
   ListDetailsBloc(this._interface) : super(ListDetailsState.initial()) {
     on<ListDetailsEvent>(
-      (event, emit) => event.map(
-        setItems: (e) => emit(state.copyWith(items: e.items)),
-        addItem: (e) => _onAddItemEvent(e.listId, e.label, emit),
-        deleteItem: (e) => _onDeleteItemEvent(e.listId, e.itemId, emit),
+      (event, emit) async => event.map(
+        loadShoppingList: (e) async => _onLoadShoppingListEvent(e.listId, emit),
+        addItem: (e) => _onAddItemEvent(e.label, emit),
+        deleteItem: (e) => _onDeleteItemEvent(e.itemId, emit),
         checkStatusChanged: (e) =>
-            _onCheckStateChangedEvent(e.id, e.index, e.isChecked, emit),
+            _onCheckStateChangedEvent(e.index, e.isChecked, emit),
       ),
     );
   }
 
+  Future<void> _onLoadShoppingListEvent(
+    String listId,
+    Emitter<ListDetailsState> emit,
+  ) async {
+    final result = await _interface.getShoppingList(listId);
+
+    emit(state.copyWith(
+      isLoading: false,
+      shoppingList: result.getSuccess(),
+      loadListResult: result,
+    ));
+  }
+
   void _onCheckStateChangedEvent(
-    String id,
     int index,
     bool isChecked,
     Emitter<ListDetailsState> emit,
   ) {
-    final updatedItem = state.items[index].copyWith(isChecked: isChecked);
+    final list = state.shoppingList!;
+    final updatedItem = list.items[index].copyWith(isChecked: isChecked);
 
-    _interface.updateCheckStatus(id, updatedItem);
+    _interface.updateCheckStatus(state.shoppingList!.id, updatedItem);
 
-    final updatedList = List<ListItem>.from(state.items)
-      ..removeAt(index)
-      ..insert(index, updatedItem);
+    final updatedList = list.copyWith(
+      items: List.from(list.items)
+        ..removeAt(index)
+        ..insert(index, updatedItem),
+    );
 
-    emit(state.copyWith(items: updatedList));
+    emit(state.copyWith(shoppingList: updatedList));
   }
 
-  void _onAddItemEvent(
-    String listId,
-    String label,
-    Emitter<ListDetailsState> emit,
-  ) {
+  void _onAddItemEvent(String label, Emitter<ListDetailsState> emit) {
     final item = ListItem(
       id: const Uuid().v1(),
       label: label,
       isChecked: false,
     );
 
-    _interface.addItem(listId, item);
+    final list = state.shoppingList!;
 
-    final updatedList = List<ListItem>.from(state.items)..add(item);
+    _interface.addItem(list.id, item);
 
-    emit(state.copyWith(items: updatedList));
+    final updatedList = list.copyWith(items: List.from(list.items)..add(item));
+
+    emit(state.copyWith(shoppingList: updatedList));
   }
 
-  void _onDeleteItemEvent(
-    String listId,
-    String itemId,
-    Emitter<ListDetailsState> emit,
-  ) {
-    _interface.deleteItem(listId, itemId);
+  void _onDeleteItemEvent(String itemId, Emitter<ListDetailsState> emit) {
+    final list = state.shoppingList!;
 
-    final updatedList = List<ListItem>.from(state.items)
-      ..removeWhere((e) => e.id == itemId);
+    _interface.deleteItem(list.id, itemId);
 
-    emit(state.copyWith(items: updatedList));
+    final updatedList = list.copyWith(
+      items: List.from(list.items)..removeWhere((e) => e.id == itemId),
+    );
+
+    emit(state.copyWith(shoppingList: updatedList));
   }
 }

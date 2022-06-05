@@ -6,7 +6,6 @@ import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/home/home_interface.dart';
 
 part 'home_cubit.freezed.dart';
-
 part 'home_state.dart';
 
 // This could be a bloc but I wanted to show I can also work with cubits
@@ -67,11 +66,14 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updateShoppingList(ShoppingList list) {
+    print(list);
     final index = state.shoppingLists.indexWhere((e) => e.id == list.id);
 
     final updatedList = List<ShoppingList>.from(state.shoppingLists)
       ..removeAt(index)
       ..insert(index, list);
+
+    print(updatedList);
 
     emit(state.copyWith(shoppingLists: updatedList));
   }
