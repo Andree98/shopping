@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   test(
-    'When the title is empty, the result should be a ValidationFailure.empty with an empty title error message',
+    'Should have a ValidationFailure.empty result with an empty title error message when the title is empty',
     () {
       // Arrange
       const emptyTitle = '';
@@ -23,7 +23,7 @@ void main() {
   );
 
   test(
-    'When the title is invalid, the result should be a ValidationFailure.invalid with an invalid title error message',
+    'Should have a ValidationFailure.invalid result with an invalid title error message when the title is invalid',
     () {
       // Arrange
       const invalidTitle = 'ti';
@@ -40,7 +40,7 @@ void main() {
   );
 
   test(
-    'When the title is valid, the result should be a success with the valid title input',
+    'Should have a success result with the valid title input when the title is valid',
     () {
       // Arrange
       const validTitle = 'title';
