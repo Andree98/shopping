@@ -5,7 +5,6 @@ import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/details/list_details_interface.dart';
-import 'package:uuid/uuid.dart';
 
 part 'list_details_bloc.freezed.dart';
 part 'list_details_event.dart';
@@ -19,7 +18,7 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
     on<ListDetailsEvent>(
       (event, emit) async => event.map(
         loadShoppingList: (e) async => _onLoadShoppingListEvent(e.listId, emit),
-        addItem: (e) => _onAddItemEvent(e.label, emit),
+        addItem: (e) => _onAddItemEvent(e.item, emit),
         deleteItem: (e) => _onDeleteItemEvent(e.itemId, emit),
         checkStatusChanged: (e) =>
             _onCheckStateChangedEvent(e.index, e.isChecked, emit),
@@ -59,13 +58,7 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
     emit(state.copyWith(shoppingList: updatedList));
   }
 
-  void _onAddItemEvent(String label, Emitter<ListDetailsState> emit) {
-    final item = ListItem(
-      id: const Uuid().v1(),
-      label: label,
-      isChecked: false,
-    );
-
+  void _onAddItemEvent(ListItem item, Emitter<ListDetailsState> emit) {
     final list = state.shoppingList!;
 
     _interface.addItem(list.id, item);

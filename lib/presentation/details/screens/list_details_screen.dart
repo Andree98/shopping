@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
+import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/domain/details/entities/details_action.dart';
 import 'package:shopping/presentation/common/widgets/delete_dialog.dart';
 import 'package:shopping/presentation/common/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/details/widgets/details_list_item.dart';
+import 'package:uuid/uuid.dart';
 
 class ListDetailsScreen extends StatefulWidget {
   const ListDetailsScreen({super.key});
@@ -106,7 +108,13 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
     if (itemLabel != null && itemLabel.isNotEmpty) {
       if (!mounted) return;
 
-      context.read<ListDetailsBloc>().add(ListDetailsEvent.addItem(itemLabel));
+      final listItem = ListItem(
+        id: const Uuid().v1(),
+        label: itemLabel,
+        isChecked: false,
+      );
+
+      context.read<ListDetailsBloc>().add(ListDetailsEvent.addItem(listItem));
     }
   }
 

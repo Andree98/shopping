@@ -4,13 +4,9 @@ part of 'list_details_bloc.dart';
 class ListDetailsEvent with _$ListDetailsEvent {
   const factory ListDetailsEvent.loadShoppingList(String listId) = _LoadList;
 
-  const factory ListDetailsEvent.addItem(
-    String label,
-  ) = _AddItem;
+  const factory ListDetailsEvent.addItem(ListItem item) = _AddItem;
 
-  const factory ListDetailsEvent.deleteItem(
-    String itemId,
-  ) = _DeleteItem;
+  const factory ListDetailsEvent.deleteItem(String itemId) = _DeleteItem;
 
   const factory ListDetailsEvent.checkStatusChanged(
     int index,
