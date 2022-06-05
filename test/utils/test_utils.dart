@@ -17,3 +17,9 @@ final shoppingList = ShoppingList(
     ),
   ),
 );
+
+final listItem = ListItem(
+  id: const Uuid().v4(),
+  label: 'Label',
+  isChecked: Random().nextBool(),
+);

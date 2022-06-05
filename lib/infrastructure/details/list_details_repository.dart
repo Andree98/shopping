@@ -21,6 +21,23 @@ class ListDetailsRepository implements ListDetailsInterface {
   }) : _client = client;
 
   @override
+  Future<Result<int, ShoppingList>> getShoppingList(String listId) async {
+    try {
+      final response = await _client.get(Uri.parse('$kBaseUrl/$listId$kJson'));
+
+      if (response.statusCode == HttpStatus.ok) {
+        final shoppingList = await compute(_parseFromJson, response.body);
+
+        return Success(shoppingList);
+      } else {
+        return Failure(response.statusCode);
+      }
+    } catch (_) {
+      return const Failure(kClientError);
+    }
+  }
+
+  @override
   Future<void> updateCheckStatus(String id, ListItem item) async {
     try {
       await _client.patch(
@@ -52,28 +69,9 @@ class ListDetailsRepository implements ListDetailsInterface {
       // Error would be logged on crashlytics
     }
   }
-
-  @override
-  Future<Result<int, ShoppingList>> getShoppingList(String listId) async {
-    try {
-      final response = await _client.get(Uri.parse('$kBaseUrl/$listId$kJson'));
-
-      if (response.statusCode == HttpStatus.ok) {
-        final shoppingList = await compute(_parseFromJson, response.body);
-
-        if (shoppingList == null) return const Failure(HttpStatus.notFound);
-
-        return Success(shoppingList);
-      } else {
-        return Failure(response.statusCode);
-      }
-    } catch (_) {
-      return const Failure(kClientError);
-    }
-  }
 }
 
-ShoppingList? _parseFromJson(String body) {
+ShoppingList _parseFromJson(String body) {
   return ShoppingListDto.fromJson(jsonDecode(body) as Map<String, dynamic>)
       .toShoppingList();
 }
