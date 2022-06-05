@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
@@ -13,10 +13,16 @@ import 'package:shopping/infrastructure/data/constants.dart';
 
 @LazySingleton(as: CreateListInterface)
 class CreateListRepository implements CreateListInterface {
+  final Client _client;
+
+  const CreateListRepository({
+    required Client client,
+  }) : _client = client;
+
   @override
   Future<Result<int, Unit>> createList(ShoppingList list) async {
     try {
-      final response = await http.put(
+      final response = await _client.put(
         Uri.parse('$kBaseUrl/${list.id}$kJson'),
         body: await compute(_parseToJson, list),
       );
@@ -31,8 +37,8 @@ class CreateListRepository implements CreateListInterface {
       return const Failure(kClientError);
     }
   }
+}
 
-  String _parseToJson(ShoppingList list) {
-    return jsonEncode(list.toShoppingListDto().toJson());
-  }
+String _parseToJson(ShoppingList list) {
+  return jsonEncode(list.toShoppingListDto().toJson());
 }
