@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
+import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/presentation/common/widgets/new_item_dialog.dart';
 import 'package:shopping/presentation/create/widgets/create_list_item.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateListScreen extends StatefulWidget {
   const CreateListScreen({super.key});
@@ -155,7 +157,13 @@ class _CreateListScreenState extends State<CreateListScreen> {
     if (itemLabel != null && itemLabel.isNotEmpty) {
       if (!mounted) return;
 
-      context.read<CreateListBloc>().add(CreateListEvent.addItem(itemLabel));
+      final listItem = ListItem(
+        id: const Uuid().v1(),
+        label: itemLabel,
+        isChecked: false,
+      );
+
+      context.read<CreateListBloc>().add(CreateListEvent.addItem(listItem));
     }
   }
 }

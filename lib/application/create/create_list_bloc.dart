@@ -20,7 +20,7 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
     on<CreateListEvent>(
       (event, emit) async => event.map(
         titleChanged: (e) => _onTitleChangedEvent(e.input, emit),
-        addItem: (e) => _onAddItemEvent(e.label, emit),
+        addItem: (e) => _onAddItemEvent(e.item, emit),
         removeItem: (e) => _onRemoveItemEvent(e.index, emit),
         checkStateChanged: (e) =>
             _onCheckStateChangedEvent(e.index, e.isChecked, emit),
@@ -33,14 +33,8 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
     emit(state.copyWith(title: ListTitle(input.trim())));
   }
 
-  void _onAddItemEvent(String label, Emitter<CreateListState> emit) {
-    final listItem = ListItem(
-      id: const Uuid().v1(),
-      label: label,
-      isChecked: false,
-    );
-
-    emit(state.copyWith(items: List.from(state.items)..add(listItem)));
+  void _onAddItemEvent(ListItem item, Emitter<CreateListState> emit) {
+    emit(state.copyWith(items: List.from(state.items)..add(item)));
   }
 
   void _onRemoveItemEvent(int index, Emitter<CreateListState> emit) {
@@ -86,7 +80,7 @@ class CreateListBloc extends Bloc<CreateListEvent, CreateListState> {
 
     emit(
       state.copyWith(
-        isSaving: saveListResult?.isSuccess() ?? false,
+        isSaving: false,
         showError: true,
         saveListResult: saveListResult,
         createdList: shoppingList,

@@ -4,7 +4,7 @@ part of 'create_list_bloc.dart';
 class CreateListEvent with _$CreateListEvent {
   const factory CreateListEvent.titleChanged(String input) = _TitleChanged;
 
-  const factory CreateListEvent.addItem(String label) = _AddItem;
+  const factory CreateListEvent.addItem(ListItem item) = _AddItem;
 
   const factory CreateListEvent.removeItem(int index) = _RemoveItem;
 
