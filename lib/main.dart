@@ -17,7 +17,7 @@ class Shopping extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: BlocProvider(
-        create: (_) => getIt<HomeCubit>(),
+        create: (_) => getIt<HomeCubit>()..loadShoppingLists(),
         child: const HomeScreen(),
       ),
     );
