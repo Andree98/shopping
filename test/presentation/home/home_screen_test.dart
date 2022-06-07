@@ -187,4 +187,29 @@ void main() {
       expect(find.byType(CreateListScreen), findsOneWidget);
     },
   );
+
+  testWidgets(
+    'Should show a LinearProgressBar when the state is deleting',
+    (tester) async {
+      when(() => homeCubit.state).thenReturn(
+        HomeState.initial().copyWith(
+          isLoading: false,
+          isDeleting: true,
+          shoppingLists: [createShoppingList()],
+          getListsResult: const Success(anything),
+        ),
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider(
+            create: (_) => getIt<HomeCubit>(),
+            child: const HomeScreen(),
+          ),
+        ),
+      );
+
+      expect(find.byType(LinearProgressIndicator), findsOneWidget);
+    },
+  );
 }
