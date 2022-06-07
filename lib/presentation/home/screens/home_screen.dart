@@ -22,15 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Shopping list'),
         actions: [
-          IconButton(
-            tooltip: 'Delete all',
-            splashRadius: 24,
-            onPressed: () async => _showDeleteDialog(),
-            icon: const Icon(
-              Icons.delete,
-              size: 20,
-            ),
-          )
+          if (context.watch<HomeCubit>().state.shoppingLists.isNotEmpty)
+            IconButton(
+              tooltip: 'Delete all',
+              splashRadius: 24,
+              onPressed: () async => _showDeleteDialog(),
+              icon: const Icon(
+                Icons.delete,
+                size: 20,
+              ),
+            )
         ],
       ),
       floatingActionButton: FloatingActionButton(
