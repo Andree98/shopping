@@ -47,16 +47,16 @@ and usability.
 The presentation layer is responsible for all the UI related code (Screens, widgets etc).
 
 With this architecture the separate layers are independent from each other and it's very easy to
-replace a layer without breaking the whole app. Another great advantage of this architecture is it
-makes it very easy to test every layer to make sure the app never breaks in the future.
+replace a layer without breaking other layers. Another great advantage of this architecture is it
+makes it very easy to test every layer.
 
 ## Any other instructions and notes you have
 
 To delete a shopping list or a list item you have to swipe right.
 
 This app wasn't written using test driven development, first I wrote the whole app and then added
-the tests at the end to save time, but I wanted to mention I'm experience with test driven
-development and have no problems with it.
+the tests at the end to save time, however I'm experienced in test driven development and can
+program in that style.
 
 For this app I didn't use any CI/CD tools but I'm very experienced with Codemagic for that purpose,
-I've also used Bitrise before but not as experienced with that.
+I've also used Bitrise before.
