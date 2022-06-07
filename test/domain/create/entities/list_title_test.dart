@@ -1,13 +1,13 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/domain/create/entities/list_title.dart';
 import 'package:shopping/domain/create/entities/validation_failure.dart';
 import 'package:shopping/domain/create/utils/title_constants.dart';
-import 'package:test/test.dart';
 
 void main() {
   test(
     'Should have a ValidationFailure.empty result with an empty title error message when the title is empty',
-    () {
+        () {
       // Arrange
       const emptyTitle = '';
 
@@ -24,7 +24,7 @@ void main() {
 
   test(
     'Should have a ValidationFailure.invalid result with an invalid title error message when the title is invalid',
-    () {
+        () {
       // Arrange
       const invalidTitle = 'ti';
 
@@ -41,7 +41,7 @@ void main() {
 
   test(
     'Should have a success result with the valid title input when the title is valid',
-    () {
+        () {
       // Arrange
       const validTitle = 'title';
 

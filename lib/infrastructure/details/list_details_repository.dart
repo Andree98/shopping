@@ -62,7 +62,7 @@ class ListDetailsRepository implements ListDetailsInterface {
   }
 
   @override
-  void deleteItem(String listId, String itemId) async {
+  void deleteItem(String listId, String itemId) {
     try {
       _client.delete(Uri.parse('$kBaseUrl/$listId/$kItemsField/$itemId$kJson'));
     } catch (_) {

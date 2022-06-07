@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/application/details/list_details_bloc.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
-import 'package:test/test.dart';
 
 import '../../utils/mocks.dart';
 import '../../utils/test_utils.dart';
@@ -122,10 +122,12 @@ void main() {
       index = Random().nextInt(shoppingList.items.length);
       updatedItem = shoppingList.items[index];
 
-      when(() => listDetailsInterface.updateCheckStatus(
-            shoppingList.id,
-            updatedItem.copyWith(isChecked: !updatedItem.isChecked),
-          )).thenAnswer((_) async => {});
+      when(
+        () => listDetailsInterface.updateCheckStatus(
+          shoppingList.id,
+          updatedItem.copyWith(isChecked: !updatedItem.isChecked),
+        ),
+      ).thenAnswer((_) async => {});
     },
     build: () => ListDetailsBloc(listDetailsInterface),
     seed: () => ListDetailsState.initial().copyWith(shoppingList: shoppingList),

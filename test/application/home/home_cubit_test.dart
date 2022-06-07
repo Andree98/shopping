@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:shopping/application/home/home_cubit.dart';
 import 'package:shopping/domain/common/entities/shopping_list.dart';
 import 'package:shopping/domain/common/entities/unit.dart';
-import 'package:test/test.dart';
 
 import '../../utils/mocks.dart';
 import '../../utils/test_utils.dart';

@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shopping/application/create/create_list_bloc.dart';
 import 'package:shopping/domain/common/entities/list_item.dart';
 import 'package:shopping/domain/create/entities/list_title.dart';
-import 'package:test/test.dart';
 
 import '../../utils/mocks.dart';
 import '../../utils/test_utils.dart';
@@ -86,16 +86,17 @@ void main() {
   );
 
   group('saveListEvent', () {
-    blocTest('Should not call the interface when the title is not valid',
-        seed: () => CreateListState.initial().copyWith(items: listItems),
-        build: () => CreateListBloc(createListInterface),
-        act: (CreateListBloc bloc) async => bloc.add(
-              const CreateListEvent.saveList(),
-            ),
-        expect: () => [
-              CreateListState.initial()
-                  .copyWith(showError: true, items: listItems),
-            ],
-        verify: (_) => verifyZeroInteractions(createListInterface));
+    blocTest(
+      'Should not call the interface when the title is not valid',
+      seed: () => CreateListState.initial().copyWith(items: listItems),
+      build: () => CreateListBloc(createListInterface),
+      act: (CreateListBloc bloc) async => bloc.add(
+        const CreateListEvent.saveList(),
+      ),
+      expect: () => [
+        CreateListState.initial().copyWith(showError: true, items: listItems),
+      ],
+      verify: (_) => verifyZeroInteractions(createListInterface),
+    );
   });
 }

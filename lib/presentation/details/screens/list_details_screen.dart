@@ -23,7 +23,8 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
         Navigator.pop(
           context,
           DetailsAction.updated(
-              context.read<ListDetailsBloc>().state.shoppingList),
+            context.read<ListDetailsBloc>().state.shoppingList,
+          ),
         );
 
         return Future.value(false);

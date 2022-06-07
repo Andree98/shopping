@@ -39,12 +39,12 @@ class CreateListItem extends StatelessWidget {
             ),
           ),
           value: item.isChecked,
-          onChanged: (checked) => context
-              .read<CreateListBloc>()
-              .add(CreateListEvent.checkStateChanged(
-                index,
-                checked!,
-              )),
+          onChanged: (checked) => context.read<CreateListBloc>().add(
+                CreateListEvent.checkStateChanged(
+                  index,
+                  checked!,
+                ),
+              ),
         ),
       ),
     );

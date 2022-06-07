@@ -32,11 +32,13 @@ class ListDetailsBloc extends Bloc<ListDetailsEvent, ListDetailsState> {
   ) async {
     final result = await _interface.getShoppingList(listId);
 
-    emit(state.copyWith(
-      isLoading: false,
-      shoppingList: result.getSuccess(),
-      loadListResult: result,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: false,
+        shoppingList: result.getSuccess(),
+        loadListResult: result,
+      ),
+    );
   }
 
   void _onCheckStateChangedEvent(
