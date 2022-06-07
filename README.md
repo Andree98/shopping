@@ -46,7 +46,7 @@ and usability.
 
 The presentation layer is responsible for all the UI related code (Screens, widgets etc).
 
-With this architecture the separate layers are not independent of each other and it's very easy to
+With this architecture the separate layers are independent from each other and it's very easy to
 replace a layer without breaking the whole app. Another great advantage of this architecture is it
 makes it very easy to test every layer to make sure the app never breaks in the future.
 
