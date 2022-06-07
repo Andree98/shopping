@@ -24,6 +24,7 @@ class _CreateListScreenState extends State<CreateListScreen> {
         title: const Text('New list'),
         actions: [
           IconButton(
+            key: const Key('save'),
             onPressed: () => context
                 .read<CreateListBloc>()
                 .add(const CreateListEvent.saveList()),

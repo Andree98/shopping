@@ -31,6 +31,7 @@ class _NewItemDialogState extends State<NewItemDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
+          key: const Key('confirm'),
           onPressed: () => Navigator.pop(context, _controller.text),
           child: const Text('Confirm'),
         ),
