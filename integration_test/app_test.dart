@@ -9,7 +9,7 @@ import 'package:shopping/presentation/create/widgets/create_list_item.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Create new shopping list test', (tester) async {
+  testWidgets('Create and delete shopping list test', (tester) async {
     app.main();
     await tester.pumpAndSettle();
 
@@ -40,6 +40,22 @@ void main() {
     await tester.tap(find.byKey(const Key('save')));
     await tester.pumpAndSettle();
 
+    // Check if the new shopping list has been added
     expect(find.text(title), findsOneWidget);
+
+    // Open the ListDetailsScreen for the added shopping list
+    await tester.tap(find.text(title));
+    await tester.pumpAndSettle();
+
+    // Click the delete button to show the confirm deletion dialog
+    await tester.tap(find.byKey(const Key('delete')));
+    await tester.pumpAndSettle();
+
+    // Confirm the deletion
+    await tester.tap(find.byKey(const Key('confirm_delete')));
+    await tester.pumpAndSettle();
+
+    // Check if the shopping list has been deleted
+    expect(find.text(title), findsNothing);
   });
 }

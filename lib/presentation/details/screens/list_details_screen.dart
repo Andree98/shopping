@@ -35,6 +35,7 @@ class _ListDetailsScreenState extends State<ListDetailsScreen> {
           ),
           actions: [
             IconButton(
+              key: const Key('delete'),
               onPressed: () async => !_hasErrors() ? _showDeleteDialog() : null,
               icon: const Icon(Icons.delete),
               splashRadius: 24,
