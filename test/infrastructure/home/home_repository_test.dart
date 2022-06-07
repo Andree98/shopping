@@ -30,7 +30,10 @@ void main() {
     List<ShoppingList> parseFromJson(String body) {
       return (jsonDecode(body) as Map<String, dynamic>)
           .entries
-          .map((e) => ShoppingListDto.fromJson(e.value).toShoppingList())
+          .map(
+            (e) => ShoppingListDto.fromJson(e.value as Map<String, dynamic>)
+                .toShoppingList(),
+          )
           .toList();
     }
 

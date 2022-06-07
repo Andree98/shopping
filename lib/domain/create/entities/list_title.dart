@@ -3,7 +3,7 @@ import 'package:shopping/domain/create/entities/validated_object.dart';
 import 'package:shopping/domain/create/entities/validation_failure.dart';
 import 'package:shopping/domain/create/utils/title_constants.dart';
 
-class ListTitle extends ValidatedObject {
+class ListTitle extends ValidatedObject<String> {
   @override
   final Result<ValidationFailure, String> value;
 
