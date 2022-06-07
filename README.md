@@ -13,8 +13,8 @@ add, delete, change the check status).
 ## 2. How to compile and run the application
 
 Before running the app make sure you
-run `flutter run build_runner build --delete-conflicting-outputs` in the terminal to generate all
-the code necessary to compile the app.
+run `flutter packages pub run build_runner build --delete-conflicting-outputs` in the terminal to
+generate all the code necessary to compile the app.
 
 ## 3. How to run tests for the application
 
